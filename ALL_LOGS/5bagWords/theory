@@ -1,0 +1,159 @@
+“In this practical, I implemented the Continuous Bag of Words (CBOW) model for word embeddings. I began by loading a paragraph of text and cleaning it using regex by removing special characters, converting to lowercase, and removing single-letter words. Next, I tokenized the words into integer IDs and created context–target pairs using a window size of 2, where the surrounding 4 words become context and the middle word becomes the target.”
+
+“I built the CBOW neural network using an Embedding layer to learn word vectors, a Lambda layer to average the embeddings of context words, two Dense layers for deeper learning, and a Softmax output layer to predict the target word. The model was compiled using sparse categorical cross-entropy and trained for 200 epochs.”
+
+“After training, I extracted the learned word embeddings and used PCA to reduce them to 2D for visualization. Finally, I tested the model with custom sentences to predict the missing center word. This practical demonstrates how CBOW learns meaningful word embeddings from raw text.”
+
+
+What each does:
+
+TensorFlow / Keras → Build CBOW model
+
+Embedding layer → Word vectors
+
+Lambda → Mean of context word embeddings
+
+Tokenizer → Convert words → integers
+
+NumPy → Arrays
+
+PCA → Reduce embedding dimensions for visualization
+
+Matplotlib → Plot word embeddings
+
+✔ Raw text for training-word embeddings.
+
+✔ Breaks paragraph into multiple sentences.
+
+
+✔ Remove special characters
+✔ Remove single-letter words
+✔ Convert to lowercase
+
+clean_sentences stores cleaned text.
+
+✔ Converts every word into an integer (word → index).
+✔ sequences contains each sentence encoded as numbers.
+
+
+
+✔ Helps in reverse mapping for predictions.
+
+
+✔ "Context window" = 2 words before + 2 words after target.
+
+
+Generate context–target pairs
+for sequence in sequences:
+    for i in range(window_size, len(sequence) - window_size):
+        context = sequence[i-window_size:i] + sequence[i+1:i+1+window_size]
+        target = sequence[i]
+
+
+✔ Context words = surrounding words
+✔ Target word = center word
+✔ Examples:
+
+['we', 'about', 'study', 'i✔ X shape = [num_samples, 4] context words
+✔ Y shape = [num_samples] → target word index
+
+dea'] → 'are'
+
+
+
+
+Layer functions:
+
+✅ Embedding Layer:
+Learns vector of each word (initially random)
+
+✅ Lambda Layer:
+CBOW → takes mean of embeddings of context words
+
+✅ Dense Layers:
+Deep neural network predicting the target word
+
+✅ Softmax Output:
+Predicts probability for every word in vocabulary
+
+
+✔ Loss = sparse cross-entropy (Y is integer)
+✔ Optimizer = Adam (best for NLP)
+✔ Trains for 200 epochs
+
+
+✔ First weight matrix in Embedding layer = learned word vectors.
+
+
+
+✅ I. PCA for Visualization
+pca = PCA(n_components=2)
+reduced_embeddings = pca.fit_transform(embeddings)
+
+
+✔ Reduces word embeddings (10D → 2D) to plot on graph.
+
+
+
+
+✔ Each point represents a word in 2D embedding space.
+
+✔ Model predicts center word from context.
+✔ Demonstrates CBOW functionality.
+
+
+✅ 1. What is CBOW?
+
+CBOW predicts the target word using its surrounding context words.
+
+✅ 2. Difference between CBOW and Skip-gram?
+
+CBOW: Context → Target
+Skip-gram: Target → Predict context words
+
+✅ 3. What are word embeddings?
+
+Dense vector representations that capture semantic meaning of words.
+
+✅ 4. What is softmax used for?
+
+Softmax outputs probability distribution across all vocabulary words.
+
+✅ 5. Why use sparse categorical cross-entropy?
+
+Because target labels are integer IDs, not one-hot vectors.
+
+✅ 6. Why use PCA?
+
+To reduce multi-dimensional embeddings to 2D for visualization.
+
+✅ Practical Questions
+✅ 7. Why use Tokenizer?
+
+To convert words into numeric indices that the model can process.
+
+✅ 8. Why clean the text?
+
+To remove special characters, lower-case, remove garbage words.
+
+✅ 9. Why use Embedding layer?
+
+It learns vector representation of words during training.
+
+✅10. Why take mean of context embeddings?
+
+Core concept of CBOW → average context represents meaning.
+
+✅11. What is window size?
+
+Number of words taken before and after the target.
+
+✅12. What does context-target pair mean?
+
+Context = surrounding words
+Target = word in the center
+
+✅ PART 4 — 1–2 Minute External Exam Summary (Say This)
+
+
+
