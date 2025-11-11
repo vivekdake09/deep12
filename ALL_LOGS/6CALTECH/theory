@@ -1,7 +1,7 @@
 “In this practical, I implemented object classification using transfer learning on the Caltech-101 dataset. I used VGG16 as a pretrained CNN model trained on ImageNet. First, I loaded and normalized images using ImageDataGenerator, and resized them to 64×64. I loaded the VGG16 model without the top classifier layers, keeping only the convolutional backbone. These layers were frozen so that their pretrained weights remain unchanged.”
 
 “Next, I added my own custom classifier: a Flatten layer, a Dense layer with 64 neurons, and a final Dense layer with 102 softmax outputs for the Caltech-101 classes. I trained only the new classifier layers while keeping the base VGG16 frozen. After training, I evaluated the model on test images and visualized predictions. This practical demonstrates how to reuse a powerful CNN model for a new image-classification task with much less data and training time.”
-
+a
 VGG16 → Pretrained CNN backbone (from ImageNet)
 
 Model (Functional API) → Used to build a new network around VGG16
