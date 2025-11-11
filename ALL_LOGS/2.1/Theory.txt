@@ -1,0 +1,210 @@
+MNIST = Modified National Institute of Standards and Technology dataset
+2.1 Handwritten digits 70000 dataset - MNIST  Used for:
+Image classification
+Testing neural networks
+Benchmark datasets in deep learning
+
+x image 
+y label
+
+✔ tensorflow, keras → for building & training neural networks
+✔ ImageDataGenerator → loads images from folders & preprocesses them
+✔ matplotlib.pyplot → plotting loss & accuracy
+✔ numpy → numerical operations, arrays
+
+✔ rescale=1/255 → converts pixel values 0–255 → 0–1
+✔ prevents large input values (helps training)
+
+
+✔ Loads all images at once (batch size = 10000)
+✔ target_size=(28,28) → resize images
+✔ color_mode='grayscale' → MNIST is 1 channel
+✔ class_mode='categorical' → one-hot encoding
+
+Same for test data.
+
+
+✔ Flatten → converts 28×28 image → 784-dim vector Flatten Layer
+Flatten converts input image (28×28×1) into a 1D vector of size 784.
+
+
+Because a Dense layer accepts only 1D inputs.
+✔ Dense(128) → 128 neurons, activation = ReLU
+✔ Dense(10) → 10 output classes, softmax gives probabilities
+Dense layer = Fully Connected Layer
+128 neurons
+activation='relu'
+Why ReLU?
+✔ Faster training
+✔ Reduces vanishing gradient
+✔ Best for hidden layers
+
+✅ Dense(10)
+10 neurons = 10 output classes (0 to 9 digits)
+activation='softmax'
+
+
+Why Softmax?
+✔ Converts raw values → probabilities
+✔ Makes total sum = 1
+✔ Used for multi-class classification
+
+✔ Optimizer = SGD SGD = Stochastic Gradient DescentW_old = existing weight
+
+gradient = slope of loss wrt that weight
+
+learning_rate = step size (default 0.01 if not specified)
+It is an optimizer used to update the weights during training.
+W_new = W_old – learning_rate × gradient
+
+
+history stores accuracy/loss per epoch.
+
+
+Keyword	Meaning
+Sequential()	Layer-by-layer simple model
+Flatten	Converts image → 1D vector
+Dense layer	Fully connected layer
+ReLU	Activation function (non-linear)
+Softmax	Converts outputs → probabilities
+SGD	Stochastic Gradient Descent optimizer
+loss='categorical_crossentropy'	Used for multi-class classification
+metrics=['accuracy']	Tracks accuracy
+fit()	Trains the model
+evaluate()	Tests the model
+predict()	Predicts output for inputs
+flow_from_directory()	Loads images from folder structure
+rescale	Normalizes pixel values
+
+
+✅ Why this is a Feed Forward Network?
+
+Because:
+
+✅ Data flows in one direction only
+(Input → Hidden → Output)
+✅ No convolution layers
+✅ No pooling
+✅ No recurrence (no LSTM, GRU)
+
+It is a simple ANN / MLP (Multi-Layer Perceptron).
+
+
+What does np.argmax() do?
+
+It finds the index of highest probability.
+
+
+✅ THEORY QUESTIONS (Short Answers)
+1. What is a feed-forward neural network?
+
+A feed-forward neural network is a model where information flows only in one direction—input → hidden layers → output—without any loops or recurrence.
+
+2. Why do we use the Flatten layer?
+
+Flatten converts a 2D/3D image into a 1D vector so that it can be passed into Dense (fully connected) layers.
+
+3. Difference between SGD and Adam optimizer.
+
+SGD updates weights using a fixed learning rate, while Adam adapts the learning rate automatically using momentum and RMS propagation, usually training faster.
+
+4. What is the role of the activation function?
+
+Activation functions introduce non-linearity, enabling the network to learn complex patterns beyond simple linear relationships.
+
+5. Why do we use ReLU in hidden layers?
+
+ReLU is fast, avoids the vanishing gradient problem, and works better for deep networks.
+
+6. What is softmax activation used for?
+
+Softmax converts outputs into probability scores that sum to 1, making it suitable for multi-class classification.
+
+7. Why do we normalize images?
+
+Normalization scales pixel values (0–255 → 0–1), helping the network train faster and with more stability.
+
+8. What is the difference between training loss and validation loss?
+
+Training loss is calculated on the training data, while validation loss is calculated on unseen data to measure generalization.
+
+9. What is overfitting? How do you detect it from graphs?
+
+Overfitting happens when the model memorizes training data but performs poorly on new data; graphs show training accuracy increasing while validation accuracy drops.
+
+10. What is categorical cross-entropy?
+
+It is a loss function used for multi-class classification that measures the difference between the true label distribution and predicted probabilities.
+
+✅ PRACTICAL / PROGRAM QUESTIONS (Short Answers)
+11. What will happen if we remove the Flatten layer?
+
+The Dense layer will not accept image inputs because it needs a 1D vector, causing a shape mismatch error.
+
+12. Why is the output layer size = 10 in MNIST?
+
+MNIST has 10 classes (digits 0 to 9), so the network needs 10 output neurons.
+
+13. What happens if batch size is very large?
+
+Training becomes slower per epoch and may require more memory, and the model may generalize poorly.
+
+14. Why do we use grayscale mode for MNIST?
+
+MNIST images are originally single-channel grayscale, so using grayscale saves memory and preserves the dataset format.
+
+15. How does ImageDataGenerator help during training?
+
+It loads images efficiently, resizes them automatically, normalizes them, and can apply augmentation.
+
+16. What is one-hot encoding and why is it needed?
+
+One-hot encoding converts class numbers into binary vectors, which is required for categorical crossEntropy loss.
+
+17. What changes are required if using CIFAR-10 instead of MNIST?
+
+Image size becomes 32×32, color mode becomes RGB, and input shape changes from (28,28,1) to (32,32,3).
+
+18. What happens if we change activation to sigmoid?
+
+Training becomes slower, gradients vanish more easily, and accuracy usually drops.
+
+19. Why do we use .flow_from_directory()?
+
+It automatically reads images from folders, labels them by directory name, resizes, batches, and normalizes them.
+
+20. How will you calculate accuracy manually?
+
+Accuracy = (Number of correct predictions / Total predictions) × 100.
+
+✅ ADVANCED QUESTIONS (Short Answers)
+21. What is the difference between neural network and perceptron?
+
+A perceptron is a single-layer classifier, while a neural network contains multiple layers and can learn complex non-linear functions.
+
+22. What is vanishing gradient? Does ReLU solve it?
+
+Vanishing gradient occurs when gradients become too small to update weights; ReLU reduces this problem because its gradient is constant for positive values.
+
+23. What happens during backpropagation?
+
+Errors are propagated backward through the network, and gradients are computed to update weights.
+
+24. Why is softmax differentiable?
+
+Softmax is a smooth function with a well-defined gradient, making it compatible with gradient descent.
+
+25. Explain the weight update rule in SGD.
+
+Weights are updated as:
+W = W – learning_rate × gradient,
+moving weights in the direction that reduces loss.
+
+
+
+
+
+
+
+
+
