@@ -1,0 +1,133 @@
+
+“In this practical, I implemented anomaly detection using an autoencoder on the credit-card fraud dataset. First, I loaded the dataset and normalized all features using StandardScaler so the network trains properly. Since autoencoders learn how to reconstruct normal patterns, I used the transaction data (excluding labels) both as input and output for training.”
+
+“The encoder compresses the transaction into a 16-dimensional latent vector, and the decoder reconstructs it back to the original 30 features. I trained the autoencoder using the Adam optimizer and mean squared error loss because reconstruction accuracy is important.”
+
+“After training, I passed test data through the model and calculated reconstruction error for each transaction. Normal transactions are reconstructed well, whereas fraudulent ones produce high MSE. Using a threshold, I classified high-error samples as anomalies. Finally, I evaluated performance using confusion matri
+
+NumPy → numerical operations
+
+Pandas → load creditcard.csv
+
+TensorFlow/Keras → build autoencoder
+
+StandardScaler → normalize dataset
+
+train_test_split → divide into train/test
+
+confusion_matrix, classification_report → evaluate anomaly detection
+
+Matplotlib → plot reconstruction error distribution
+
+layers, models → build encoder and decode
+
+Separate features and labels
+X = scaler.fit_transform(dataset.drop("Class", axis=1))
+y = dataset["Class"]
+
+
+✔ Normal transactions = 0
+✔ Fraud transactions = 1
+✔ StandardScaler normalizes features so neural network trains properly.
+
+Split into train/test
+
+
+✅ C. Build Encoder (Compress High-Dim Data)
+✔ Encoder compresses high-dim credit-card transaction features
+✔ Learns compressed representation (“latent vector”)
+✔ ReLU adds non-linearity
+
+
+✅ D. Build Decoder (Reconstruct Original Input)
+
+✔ Decoder expands latent vector back to original features
+✔ Output activation = linear because input values are continuous
+
+
+
+✅ Autoencoder = Encoder + Decoder
+
+✔ Loss = MSE because we want accurate reconstruction
+✔ Optimizer = Adam → fast, adaptive learning
+
+
+✅ Train Autoencoder
+✔ Autoencoder tries to reconstruct normal transactions
+✔ Fraudulent transactions → poor reconstruction → higher error (MSE)
+✔ Input = Output = X (unsupervised learning)
+
+
+✅ Compute Reconstruction Error
+✔ MSE measures how well each sample is reconstructed
+✔ High MSE indicates anomaly/fraud
+
+
+✔ Threshold decides if error is high enough to mark anomaly
+✔ If MSE > threshold → flagged as fraud
+
+
+
+1️⃣ What is an autoencoder?
+
+A neural network that learns to reconstruct its input using an encoder and decoder.
+
+2️⃣ Why use autoencoder for anomaly detection?
+
+It learns normal patterns; anomalies reconstruct poorly and give high error.
+
+3️⃣ What is latent representation?
+
+A compressed low-dimensional encoding of the input features.
+
+4️⃣ Why is MSE used as loss?
+
+It measures how different reconstruction is from the original.
+
+5️⃣ Why use StandardScaler?
+
+To normalize features for stable and faster training.
+
+✅ Practical Questions
+6️⃣ Why input and output both are X?
+
+Autoencoder is unsupervised and attempts to reconstruct the same input.
+
+7️⃣ Why linear activation in final decoder layer?
+
+To output continuous numeric values matching original data.
+
+8️⃣ What happens if threshold is too low?
+
+Many normal samples are falsely marked as anomalies.
+
+9️⃣ What if latent dimension is too small?
+
+Reconstruction becomes bad → more false positives.
+
+🔟 Why choose Adam optimizer?
+
+It converges faster and handles sparse, noisy data well.
+
+11️⃣ Why batch_size = 32?
+
+Good balance between memory usage and gradient stability.
+
+12️⃣ Why split into train/test?
+
+Train on normal patterns, test on real data to detect anomalies.
+
+✅ Advanced Viva Questions
+13️⃣ How does backpropagation work here?
+
+It updates encoder and decoder weights to minimize reconstruction error.
+
+14️⃣ Why is anomaly detection unsupervised?
+
+Because labels may not be available or fraud cases are very rare.
+
+15️⃣ What are false positives and false negatives?
+
+FP = normal marked as fraud; FN = fraud missed — critical in banking.
+
+
