@@ -1,0 +1,212 @@
+#a. Import the necessary packages
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+from tensorflow.keras.layers import Input, Conv2D, Dense, Flatten, Dropout
+from tensorflow.keras.layers import GlobalMaxPooling2D, MaxPooling2D
+from tensorflow.keras.layers import BatchNormalization
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.models import Model
+from keras.utils import to_categorical
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+
+
+#b. Load the training and testing data (MNIST/CIFAR10)
+
+train_data_dir = 'cifar-10-img/train'
+test_data_dir = 'cifar-10-img/test'
+
+# Image data generator for training data
+train_datagen = ImageDataGenerator(
+rescale=1.0/255
+)
+
+# Image data generator for testing data
+test_datagen = ImageDataGenerator(
+rescale=1.0/255
+)
+
+# Create data generators
+train_batch_size = 20000
+train_generator = train_datagen.flow_from_directory(
+    train_data_dir,
+    target_size=(32, 32),  # Resize images to 32x32
+    batch_size=train_batch_size,
+    class_mode='sparse', 
+    shuffle=True,
+)
+
+# Load test data without labels (class_mode=None)
+test_batch_size = 1000
+test_generator = test_datagen.flow_from_directory(
+    test_data_dir,
+    target_size=(32, 32),  # Resize images to 32x32
+    batch_size=test_batch_size,
+    class_mode='sparse', 
+    shuffle=True,
+)
+
+
+
+
+
+
+x_train, y_train = train_generator[0]
+x_test, y_test = test_generator[0]
+
+
+
+
+
+y_train = y_train.flatten()
+y_test = y_test.flatten()
+
+
+
+
+
+
+#c. Define the network architecture using Keras
+
+
+
+# number of classes
+K = len(set(y_train))
+# calculate total number of classes 
+# for output layer
+print("number of classes:", K)
+i = Input(shape=x_train[0].shape)
+x = Conv2D(32, (3, 3), activation='relu', padding='same')(i)
+x = BatchNormalization()(x)
+x = Conv2D(32, (3, 3), activation='relu', padding='same')(x)
+x = BatchNormalization()(x)
+x = MaxPooling2D((2, 2))(x)
+ 
+x = Conv2D(64, (3, 3), activation='relu', padding='same')(x)
+x = BatchNormalization()(x)
+x = Conv2D(64, (3, 3), activation='relu', padding='same')(x)
+x = BatchNormalization()(x)
+x = MaxPooling2D((2, 2))(x)
+ 
+x = Conv2D(128, (3, 3), activation='relu', padding='same')(x)
+x = BatchNormalization()(x)
+x = Conv2D(128, (3, 3), activation='relu', padding='same')(x)
+x = BatchNormalization()(x)
+x = MaxPooling2D((2, 2))(x)
+ 
+x = Flatten()(x)
+x = Dropout(0.2)(x)
+ 
+# Hidden layer
+x = Dense(1024, activation='relu')(x)
+x = Dropout(0.2)(x)
+ 
+# last hidden layer i.e.. output layer
+x = Dense(K, activation='softmax')(x)
+ 
+model = Model(i, x)
+
+
+
+
+
+#D.Train the model using SGD
+model.compile(optimizer='sgd', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+history = model.fit(x_train, y_train, epochs=10, validation_data=(x_test, y_test))
+
+
+
+
+
+#e. Evaluate the network
+test_loss, test_acc = model.evaluate(x_test, y_test)
+print("Loss: ", test_loss)
+print("Accuracy: ", test_acc)
+
+
+
+
+
+
+
+
+
+import matplotlib.pyplot as plt
+y = to_categorical(y_test)
+predicted_value = model.predict(x_test)
+
+
+
+
+
+
+
+
+n = 10
+plt.imshow(x_test[n])
+print("Actual Number: ",labels[np.argmax(y[n])])
+print("Predicted Number: ", labels[np.argmax(predicted_value[n])])
+
+
+
+
+
+
+
+#f. Plot the training loss and accuracy
+
+history = history.history
+history.keys()
+
+
+
+
+plt.plot(history['accuracy'])
+plt.plot(history['val_accuracy'])
+plt.title("Model Accuracy")
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['Train', "Validation"], loc='upper left')
+
+
+
+
+
+
+plt.plot(history['loss'])
+plt.plot(history['val_loss'])
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['Train', 'Validation'], loc='upper left')
+
+
+
+
+
+plt.plot(history['accuracy'])
+plt.plot(history['val_accuracy'])
+plt.plot(history['loss'])
+plt.plot(history['val_loss'])
+plt.title('Training Loss and accuracy')
+plt.ylabel('accuracy/Loss')
+plt.xlabel('epoch')
+plt.legend(['accuracy', 'val_accuracy','loss','val_loss'])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
