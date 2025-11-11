@@ -1,0 +1,127 @@
+“In this practical, I implemented an anomaly detection system for ECG signals using an Autoencoder. First, I loaded the ECG dataset and normalized it using StandardScaler so that the neural network trains properly. Since autoencoders learn to reconstruct the input, I used the same ECG data as both input and output.”
+
+“Next, I built an autoencoder consisting of an encoder that compresses the ECG signal into an 8-dimensional latent representation, and a decoder that reconstructs the original signal. I trained the model using Adam optimizer and Mean Squared Error loss because we want the reconstruction error to be minimized.”
+
+“After training the model on normal ECG patterns, I passed test data through the autoencoder and calculated reconstruction error (MSE). ECG signals that had very high MSE (above the 95th percentile threshold) were marked as anomalies. I plotted MSE graphs, visualized reconstructed ECGs, displayed anomalous ECGs, and finally evaluated the detection using confusion matrix and classification report.”
+
+“This shows how autoencoders can effectively detect abnormal heartbeats by learning only normal patterns and identifying signals that do not match the learned structure.”
+
+
+✔ NumPy → numerical operations
+✔ Pandas → load ECG CSV file
+✔ TensorFlow/Keras → build autoencoder
+✔ StandardScaler → normalize ECG values
+✔ confusion_matrix, classification_report → anomaly evaluation
+✔ Matplotlib → plotting ECG + MSE curves
+
+
+✔ ECG data is scaled for stable training
+✔ Autoencoder tries to reconstruct the same input, so
+X = input, y = output
+
+
+
+✔ 80% used to train reconstruction
+✔ 20% used to detect anomalies
+✔ input_dim = number of ECG time steps
+
+C. Encoder — Compress Input into Latent Representation
+
+✔ Autoencoder compresses ECG signal
+✔ Latent dimension = 8
+✔ Encoder learns normal ECG patterns
+
+✅ D. Decoder — Reconstruct Original ECG
+decoder = models.Sequential([
+    layers.Input(shape=(8,)),
+    layers.Dense(16, activation='relu'),
+    layers.Dense(32, activation='relu'),
+    layers.Dense(input_dim, activation='linear')
+])
+
+
+✔ Decoder expands 8-dim latent → reconstruct full ECG
+✔ Output uses linear activation (for continuous values)
+
+
+E]
+✔ Autoencoder = Encoder + Decoder
+✔ Loss = MSE → measures reconstruction error
+✔ Optimizer = Adam → fast training
+✔ Trained using normal ECG only
+
+✔ Higher MSE → poor reconstruction → likely anomaly
+
+✔ Top 5% highest errors marked as anomalies
+
+G. Visualizing Results
+
+Plot MSE + threshold
+plt.plot(mse)
+plt.axhline(threshold)
+
+
+✔ Shows which samples crossed anomaly threshold
+
+Plot normal ECG & reconstructed ECG
+
+✔ Good match → normal
+✔ Poor match → anomaly
+
+Plot confusion matrix
+
+✔ Evaluates anomaly detection quality
+
+✅ Theory Questions
+
+What is an Autoencoder?
+A neural network that learns to reconstruct its input using encoder and decoder.
+
+Why use autoencoder for anomaly detection?
+Because it learns only normal patterns; anomalies reconstruct poorly, giving high error.
+
+What is latent representation?
+Compressed internal representation of the original signal.
+
+Why is MSE used as loss function?
+Because it measures difference between original and reconstructed ECG.
+
+Why linear activation in output layer?
+ECG values are continuous, so linear preserves real-valued outputs.
+
+What is StandardScaler?
+It normalizes data to mean=0, variance=1 for stable training.
+
+✅ Practical Code Questions
+
+Why X_train = X_train in autoencoder training?
+The goal is to reconstruct the input, so input = output.
+
+Why choose threshold = 95 percentile?
+Top 5% highest errors often represent anomalies.
+
+What happens if encoder size is too small?
+Model loses information → poor reconstruction.
+
+What happens if latent dimension is too large?
+Model memorizes data → cannot detect anomalies.
+
+Why shuffle=True?
+Prevents model from learning order-based patterns.
+
+✅ Advanced Questions
+
+How does autoencoder detect anomalies?
+By comparing reconstruction error; high MSE means anomaly.
+
+Explain backpropagation in autoencoder.
+Network adjusts weights to minimize reconstruction error.
+
+Difference between supervised and unsupervised learning?
+Autoencoder is unsupervised because labels are not needed.
+
+Why Adam optimizer?
+It adapts learning rate, converges faster.
+
+
+
