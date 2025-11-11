@@ -1,0 +1,105 @@
+In this practical, I built an image classification model using a CNN on MNIST images. First, I loaded the images from folders using ImageDataGenerator, which also resized and normalized them. Then I defined a simple CNN with a Conv2D layer to extract features, a MaxPooling layer to reduce size, a Flatten layer to convert features into a vector, and Dense layers for classification using Softmax. I trained the model using the Adam optimizer for 5 epochs and evaluated it using test data. Finally, I displayed a sample image and compared the actual vs predicted class, and the model achieved good accuracy.”
+
+
+
+
+Library	Purpose
+TensorFlow/Keras	Neural network creation & training
+ImageDataGenerator	Load and preprocess images
+Conv2D	Convolution layers
+MaxPooling2D	Downsampling
+Dense	Fully connected layer
+Flatten	Convert 2D to 1D
+Adam	Optimizer
+Matplotlib	Visualization
+✅ Important Keywords
+Keyword	Meaning
+Convolution	Extracts image features
+ReLU	Activation to avoid vanishing gradients
+Softmax	Converts to probability distribution
+Categorical cross-entropy	Loss for multi-class, one-hot labels
+Epoch	One complete pass through the dataset
+Batch size	Number of samples processed before updating weights
+Backpropagation	Error sent backwards to update weights
+✅ PART 3 — Viva Questions with Perfect Answers (SPPU)
+✅ Theory Questions
+1. What is MNIST?
+
+A dataset of 70,000 handwritten digit images (28×28 grayscale).
+
+2. What is a CNN?
+
+A CNN is a deep learning model that learns image features using Convolution and Pooling.
+
+3. Why use Conv2D?
+
+Conv2D extracts spatial patterns such as edges and shapes.
+
+4. Why MaxPooling?
+
+Reduces computation, shrinks image size, and prevents overfitting.
+
+5. Why ReLU?
+
+Prevents vanishing gradients and speeds up training.
+
+6. Why Softmax in output?
+
+Softmax converts output logits into probability distribution (sum = 1).
+
+7. Why categorical cross-entropy?
+
+Used for multi-class classification with one-hot encoded labels.
+
+8. What is normalization?
+
+Scaling pixel values (0–255 → 0–1) for stable training.
+
+9. What is backpropagation?
+
+The process of computing gradients and updating weights to reduce loss.
+
+10. What is overfitting?
+
+When training accuracy increases but validation accuracy drops.
+
+✅ Practical Questions
+11. Why use ImageDataGenerator?
+
+Automatically loads, resizes, normalizes images.
+
+12. Why grayscale?
+
+MNIST images are single-channel.
+
+13. Why one-hot encoding?
+
+Required by categorical cross-entropy.
+
+14. Why Conv + Pool before Dense?
+
+To extract features and reduce dimensionality.
+
+15. What happens if we remove Flatten?
+
+Dense layers cannot process 2D input → error.
+
+16. Why train for 5 epochs?
+
+MNIST is simple, and 5 epochs achieve good accuracy.
+
+17. Why optimizer='adam'?
+
+Adam adapts learning rate automatically → faster convergence.
+
+18. Why batch size = 64?
+
+It balances training speed and stability.
+
+19. What does model.evaluate do?
+
+Computes loss & accuracy on test data.
+
+20. What does np.argmax do?
+
+Returns the class with highest predicted probability
