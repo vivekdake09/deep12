@@ -1,0 +1,130 @@
+✅ Reads all images as RGB (32×32×3)
+✅ class_mode='sparse' → labels stored as integers (0–9)
+✅ Large batch loads all training data in one go
+
+Convolution Block 1
+x = Conv2D(32, (3,3), activation='relu', padding='same')(i)
+x = BatchNormalization()(x)
+x = Conv2D(32, (3,3), activation='relu', padding='same')(x)
+x = BatchNormalization()(x)
+x = MaxPooling2D((2,2))(x)
+
+
+✅ Extracts low-level features
+✅ BatchNorm speeds up training
+✅ MaxPooling reduces size (downsampling)
+
+Convolution Block 2 (same pattern, more filters)
+
+✅ Learns deeper features like textures
+
+Convolution Block 3 (even deeper)
+
+✅ Learns complex shapes & patterns
+
+1. What is a CNN?
+
+A CNN (Convolutional Neural Network) is a deep learning model designed to automatically extract spatial features from images using convolution and pooling operations.
+
+2. Why do we use Conv2D layers?
+
+Conv2D layers apply learnable filters over an image to detect features like edges, textures, shapes, and patterns.
+
+3. What is the purpose of BatchNormalization?
+
+BatchNorm normalizes layer outputs to stabilize and speed up training, and helps reduce internal covariate shift.
+
+4. Why use MaxPooling?
+
+MaxPooling reduces the spatial size of feature maps, removes noise, and helps prevent overfitting by keeping only the strongest features.
+
+5. What is the difference between RGB and grayscale images?
+
+RGB images have 3 color channels (Red, Green, Blue), while grayscale images have only 1 channel representing intensity.
+
+6. What is ReLU and why is it used?
+
+ReLU = max(0, x). It introduces non-linearity, trains faster, and helps avoid the vanishing gradient problem.
+
+7. Why do we use softmax in the output layer?
+
+Softmax converts raw outputs into probability values that sum to 1, used for multi-class classification.
+
+8. What is Dropout? Why do we use it?
+
+Dropout randomly disables neurons during training to prevent overfitting and improve generalization.
+
+9. What is sparse categorical cross-entropy?
+
+It is a loss function used when labels are integer-encoded instead of one-hot encoded for multi-class classification.
+
+10. What is overfitting and how do graphs show it?
+
+Overfitting happens when the model learns training data too well but performs poorly on test data; graphs show training accuracy increasing while validation accuracy decreases.
+
+✅ PRACTICAL / CODE VIVA QUESTIONS
+11. Why did you resize to 32×32?
+
+Because CIFAR-10 images are originally 32×32 pixels, so resizing preserves their natural resolution.
+
+12. Why use class_mode='sparse'?
+
+Because labels are integers (0–9), and sparse cross-entropy directly accepts integer labels without one-hot encoding.
+
+13. Why batch size = 20,000?
+
+To load the entire training dataset in one batch since the images are small and CIFAR-10 is lightweight.
+
+14. Why use three Conv blocks?
+
+Each block learns deeper features — first edges, then textures, then shapes and object-level patterns.
+
+15. What happens if we remove Dropout?
+
+The model may overfit because all neurons stay active, increasing the risk of memorizing training data.
+
+16. Why do we normalize images (rescale=1/255)?
+
+Normalization converts pixel values from 0–255 to 0–1, ensuring faster and more stable training.
+
+17. What does model.compile() do?
+
+It sets the loss function, optimizer, and evaluation metrics so the model knows how to train.
+
+18. What is the role of SGD?
+
+SGD updates weights using gradients to minimize loss, applying the formula:
+W_new = W_old – learning_rate × gradient
+
+19. What is the effect of increasing epochs?
+
+Increasing epochs usually improves learning, but too many epochs can lead to overfitting.
+
+20. Why do we use Flatten before Dense?
+
+Flatten converts 3D feature maps into a 1D vector so the Dense layer can process them.
+
+✅ ADVANCED VIVA QUESTIONS
+21. Explain backpropagation in CNN.
+
+Backpropagation calculates gradients of loss with respect to each weight (filters and neurons) and updates them to reduce error.
+
+22. What is a feature map?
+
+A feature map is the output of a convolution layer that highlights detected features like edges or textures.
+
+23. What is filter/kernel size?
+
+It is the dimension of the sliding window (e.g., 3×3) used by Conv2D to extract features.
+
+24. What is padding?
+
+Padding adds zeros around the image borders to preserve spatial dimensions after convolution.
+
+25. Why BatchNorm helps reduce internal covariate shift?
+
+BatchNorm keeps layer inputs stable by normalizing them, preventing shifts in data distribution during training.
+
+26. Why deep CNN performs better than ANN for images?
+
+CNNs preserve spatial relationships using filters, while ANNs flatten data and lose spatial information.
