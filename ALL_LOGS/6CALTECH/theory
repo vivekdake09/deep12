@@ -1,0 +1,110 @@
+“In this practical, I implemented object classification using transfer learning on the Caltech-101 dataset. I used VGG16 as a pretrained CNN model trained on ImageNet. First, I loaded and normalized images using ImageDataGenerator, and resized them to 64×64. I loaded the VGG16 model without the top classifier layers, keeping only the convolutional backbone. These layers were frozen so that their pretrained weights remain unchanged.”
+
+“Next, I added my own custom classifier: a Flatten layer, a Dense layer with 64 neurons, and a final Dense layer with 102 softmax outputs for the Caltech-101 classes. I trained only the new classifier layers while keeping the base VGG16 frozen. After training, I evaluated the model on test images and visualized predictions. This practical demonstrates how to reuse a powerful CNN model for a new image-classification task with much less data and training time.”
+
+VGG16 → Pretrained CNN backbone (from ImageNet)
+
+Model (Functional API) → Used to build a new network around VGG16
+
+Flatten → Converts feature maps → vector
+
+Dense → Custom classifier layers
+
+ImageDataGenerator → Loads and preprocesses Caltech images
+
+Adam optimizer → Used to train the custom classifier
+
+NumPy → Numerical processing
+
+
+✅ B. Load and Preprocess Caltech-101 Dataset
+ImageDataGenerator
+dataset_datagen = ImageDataGenerator(rescale=1.0 / 255)
+
+
+✔ Normalizes image pixel values (0–255 → 0–1).
+✔ Improves training stability.
+
+✔ Reads images directly from folders
+✔ Resizes all images to 64×64×3
+✔ Converts labels to one-hot encoding
+✔ Loads all images in large batches (Caltech is small)
+
+✔ Since batch size = 2000, index 0 and 1 give two different random batches
+✔ First batch used as train data
+✔ Second batch used as test data
+
+
+✔ Freezes all pretrained convolution layers
+✔ Prevents changing the weights
+✔ Uses VGG16 as a feature extractor
+
+Flatten → converts spatial features to 1D
+✔ Dense(64) → learns Caltech-specific patterns
+✔ Dense(102, softmax) → because Caltech-101 has 102 class folders
+
+
+1. What is transfer learning?
+
+Using a pretrained CNN model trained on a large dataset like ImageNet and adapting it to a smaller dataset.
+
+2. Why freeze layers?
+
+To preserve pretrained features like edges, textures, patterns.
+
+3. What is VGG16?
+
+A deep CNN architecture with 16 layers trained on ImageNet.
+
+4. What is feature extraction?
+
+Using pretrained convolution layers to extract useful features.
+
+5. Why use softmax?
+
+Softmax outputs probabilities for 102 classes (Caltech-101).
+
+6. Why use categorical_crossentropy?
+
+It is the standard loss function for multi-class classification.
+
+✅ Practical Questions
+7. Why include_top=False?
+
+To remove default classifier and attach your own.
+
+8. Why train only Dense layers first?
+
+To train quickly without damaging pretrained weights.
+
+9. Why resize images to 64×64?
+
+VGG16 requires consistent input size; Caltech images vary in size.
+
+10. Why use ImageDataGenerator?
+
+Loads images from folders, normalizes, batches automatically.
+
+11. What happens if you unfreeze too many layers?
+
+Model may overfit or destroy pretrained knowledge.
+
+12. Why batch_size=2000?
+
+Caltech dataset is small; loading all images at once is efficient.
+
+✅ Advanced Questions
+13. What is fine-tuning?
+
+Retraining selected deeper layers of pretrained model to adapt it better to the new dataset.
+
+14. Why use Adam?
+
+Adaptive learning rate, efficient on deep networks.
+
+15. Difference between CNN and pretrained CNN?
+
+A pretrained CNN already has learned features from a huge dataset.
+
+✅ PART 4 — 1–2 MINUTE PRACTICAL SUMMARY (Tell This to External)
+
